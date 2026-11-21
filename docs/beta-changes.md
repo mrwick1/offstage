@@ -6,6 +6,23 @@ their agents read it after an update. "Retest" names what to try again.
 Each build is a GitHub pre-release with the same name. The plugin from the
 `beta` branch pins the newest build.
 
+## v0.11.0-beta.16 (2026-11-22)
+
+- Fix (Linux and Windows, OFS-21): `act` now lists at most 50 added and 50
+  removed lines in its diff and ends with a count of the rest. A new
+  `max_changes` input changes the limit; a negative value lists everything.
+  Before, a click on a long dropdown could return tens of thousands of
+  characters.
+- Fix (relay, OFS-48): a report that matches a Closed item now files a new
+  item. Before, it went to the closed item and nobody saw it.
+- Bare v0.1.17 rolls out with this build. It adds `nth=N` to pick one of
+  several locator matches (OFS-19), reports a locator syntax error as a bad
+  argument (OFS-19), summarizes long runs of new elements in a diff (OFS-21,
+  OFS-26, OFS-31), resolves `https:/x` style URLs (OFS-47) and gives the
+  right part-match operator in the near-name hint (OFS-46).
+- Retest: a page with a long dropdown or repeated links; a locator with
+  `nth=1`.
+
 ## v0.11.0-beta.15 (2026-11-18)
 
 - Change: the offstage instructions now teach the Bare loop: verify on the
