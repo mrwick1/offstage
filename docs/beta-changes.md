@@ -15,13 +15,9 @@ Each build is a GitHub pre-release with the same name. The plugin from the
   characters.
 - Fix (relay, OFS-48): a report that matches a Closed item now files a new
   item. Before, it went to the closed item and nobody saw it.
-- Bare v0.1.17 rolls out with this build. It adds `nth=N` to pick one of
-  several locator matches (OFS-19), reports a locator syntax error as a bad
-  argument (OFS-19), summarizes long runs of new elements in a diff (OFS-21,
-  OFS-26, OFS-31), resolves `https:/x` style URLs (OFS-47) and gives the
-  right part-match operator in the near-name hint (OFS-46).
-- Retest: a page with a long dropdown or repeated links; a locator with
-  `nth=1`.
+- Bare stays at v0.1.16 with this build. The Bare fixes for OFS-19, OFS-21,
+  OFS-26, OFS-31, OFS-46 and OFS-47 come in a later build.
+- Retest: an `act` click that opens a long dropdown.
 
 ## v0.11.0-beta.15 (2026-11-18)
 
