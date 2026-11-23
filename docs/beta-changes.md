@@ -6,6 +6,16 @@ their agents read it after an update. "Retest" names what to try again.
 Each build is a GitHub pre-release with the same name. The plugin from the
 `beta` branch pins the newest build.
 
+## v0.11.0-beta.17 (2026-11-24)
+
+- Bare v0.1.19 rolls out with this build (Linux and Windows). Pages with
+  WebSocket connections now support compressed messages
+  (permessage-deflate). An idle open WebSocket no longer uses CPU in the
+  browser. A page event with several listeners no longer crashes Bare when
+  memory is reclaimed between two listeners.
+- Retest: a page that uses a WebSocket (chat or live updates), and a page
+  that sends messages between frames or workers.
+
 ## v0.11.0-beta.16 (2026-11-22)
 
 - Fix (Linux and Windows, OFS-21): `act` now lists at most 50 added and 50
