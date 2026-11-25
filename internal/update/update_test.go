@@ -11,6 +11,7 @@ import (
 	"runtime"
 	"sync/atomic"
 	"testing"
+	"time"
 )
 
 func TestNewer(t *testing.T) {
@@ -183,6 +184,12 @@ func TestCheckKeepsOwnBare(t *testing.T) {
 
 func TestWatchSeesAStagedUpdate(t *testing.T) {
 	f := newFixture(t, "0.11.0-beta.13")
+	// The old and new test binaries have the same size: give the old one an
+	// older time, as a real update comes long after a server starts.
+	old := time.Now().Add(-time.Hour)
+	if err := os.Chtimes(f.exe, old, old); err != nil {
+		t.Fatal(err)
+	}
 	other := NewWatch(f.exe) // a second server, started before the update
 	if _, err := Check(f.opts("v0.11.0-beta.12")); err != nil {
 		t.Fatal(err)
