@@ -37,6 +37,7 @@ const (
 	CodeFFmpeg       Code = "ffmpeg_missing"
 	CodeAckRequired  Code = "ack_required"  // a guarded action needs an ack argument that says why
 	CodeSystemPrompt Code = "system_prompt" // input on a polkit, keyring or pinentry prompt of the human
+	CodeWithheld     Code = "withheld"      // Bare refused a capture because a secret shows on the page
 	// CodeUnsupportedKind: the tool does not apply to this kind of screen
 	// (a headless browser has no compositor, windows, mirror or clipboard).
 	CodeUnsupportedKind Code = "unsupported_kind"

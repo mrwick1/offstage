@@ -39,6 +39,9 @@ func TestAutoReportTriggers(t *testing.T) {
 			{entry("click", "hc-a", "invalid_name"), ""}, {entry("click", "hc-a", "invalid_name"), ""}, {entry("click", "hc-a", "invalid_name"), ""},
 			{entry("click", "desktop", "ack_required"), ""}, {entry("click", "desktop", "system_prompt"), ""}, {entry("x", "hc-a", "not_owner"), ""},
 		}},
+		{"Bare privacy refusals never file", []step{
+			{entry("browser_screenshot", "", "withheld"), ""}, {entry("browser_screenshot", "", "withheld"), ""}, {entry("browser_screenshot", "", "withheld"), ""},
+		}},
 		{"three failures in a row file a doubt", []step{
 			{entry("find", "hc-a", "timeout"), ""}, {entry("find", "hc-a", "timeout"), ""}, {entry("find", "hc-a", "timeout"), "doubt"},
 		}},

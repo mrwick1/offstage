@@ -161,6 +161,30 @@ func TestBareBrowser(t *testing.T) {
 	if meta, _ := os.ReadFile(metas[0]); !strings.Contains(string(meta), `"title": "[auto] `) || !strings.Contains(string(meta), "browser_snapshot") {
 		t.Fatalf("meta: %s", meta)
 	}
+	// A Bare privacy refusal is a guard block: it has its own code and files no report.
+	secrets := filepath.Join(t.TempDir(), "secrets.env")
+	if err := os.WriteFile(secrets, []byte("TOKEN=ready\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	call("browser_open", map[string]any{"url": page.URL, "session": "secret", "secrets_file": secrets})
+	for range autoStreak {
+		res, err := cs.CallTool(ctx, &mcp.CallToolParams{Name: "browser_screenshot", Arguments: map[string]any{"session": "secret"}})
+		if err != nil || !res.IsError || !strings.HasPrefix(text(res), "withheld:") {
+			t.Fatalf("screenshot of a secret: %v %v", res, err)
+		}
+	}
+	call("browser_close", map[string]any{"session": "secret"})
+	raw, err = os.ReadFile(filepath.Join(os.Getenv("XDG_STATE_HOME"), "offstage", "actions.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if lines := strings.Split(strings.TrimSpace(string(raw)), "\n"); !strings.Contains(lines[len(lines)-2], `"error":"withheld"`) {
+		t.Fatalf("audit entry %s, want error withheld", lines[len(lines)-2])
+	}
+	time.Sleep(500 * time.Millisecond) // an automatic report is filed in the background
+	if metas, _ = filepath.Glob(filepath.Join(report.QueueDir(), "*", "meta.json")); len(metas) != 1 {
+		t.Fatalf("automatic reports %v after privacy refusals, want 1", metas)
+	}
 	res, err := cs.CallTool(ctx, &mcp.CallToolParams{Name: "screen_create", Arguments: map[string]any{"kind": "headless"}})
 	if err != nil || !res.IsError || !strings.Contains(text(res), "Bare") {
 		t.Fatalf("old headless API: %v %v", res, err)
