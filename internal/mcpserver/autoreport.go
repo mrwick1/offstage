@@ -28,7 +28,7 @@ var autoBugCodes = map[string]bool{
 // autoIgnored are the caller's mistakes and guard refusals. They stay in
 // the block log only.
 var autoIgnored = map[string]bool{
-	"invalid_name": true, "not_owner": true, "ack_required": true, "system_prompt": true,
+	"invalid_name": true, "not_owner": true, "ack_required": true, "system_prompt": true, "withheld": true,
 }
 
 type autoState struct {

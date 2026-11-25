@@ -87,6 +87,9 @@ func (s *Server) registerBare(ctx context.Context, srv *mcp.Server) error {
 			failed := err
 			if err == nil && result != nil && result.IsError {
 				failed = fmt.Errorf("Bare tool failed")
+				if strings.HasPrefix(textResultText(result), "withheld:") {
+					failed = &screen.Error{Code: screen.CodeWithheld, Msg: "Bare withheld a capture"}
+				}
 			}
 			// Bare arguments can contain credentials and scripts. Log metadata only.
 			metadata = append(metadata, audit.WithDuration(time.Since(start)))
