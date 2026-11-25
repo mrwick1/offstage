@@ -6,6 +6,20 @@ their agents read it after an update. "Retest" names what to try again.
 Each build is a GitHub pre-release with the same name. The plugin from the
 `beta` branch pins the newest build.
 
+## v0.11.0-beta.18 (2026-11-26)
+
+- Fix (Linux and Windows, OFS-57): a Bare screenshot that is withheld
+  because a secret shows on the page no longer counts toward an automatic
+  report. Before, three such refusals in a row filed an `[auto]` report.
+- Bare v0.1.21 rolls out with this build (Linux and Windows). A step with a
+  syntax error, such as a `fill` text without quotes or an `expect` without a
+  state, now fails as a bad argument and says what is missing (OFS-58).
+  Grafana 13 pages now load (OFS-59). It also adds IndexedDB that persists in
+  a saved profile, sends ArrayBuffer request bodies as bytes, and fixes
+  several layout and DOM errors.
+- Retest: three `browser_screenshot` calls on a page that shows a secret;
+  `browser_ensure_session` with a wrong step; a Grafana login page.
+
 ## v0.11.0-beta.17 (2026-11-24)
 
 - Bare v0.1.19 rolls out with this build (Linux and Windows). Pages with
