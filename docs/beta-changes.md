@@ -6,6 +6,18 @@ their agents read it after an update. "Retest" names what to try again.
 Each build is a GitHub pre-release with the same name. The plugin from the
 `beta` branch pins the newest build.
 
+## v0.11.0-beta.19 (2026-11-28)
+
+- Fix (Linux and Windows, OFS-65): a Bare call refused for wrong arguments
+  (`invalid_arguments`) no longer counts toward an automatic report. Before,
+  three such refusals in a row on one tool filed an `[auto]` report. Other
+  Bare failures still count.
+- Bare v0.1.22 rolls out with this build (Linux and Windows). A `blob:`
+  iframe now loads its document, and `window.open` with an empty URL opens
+  no tab (OFS-64).
+- Retest: three `browser_act` calls with a wrong argument in a row, then
+  check that no `[auto]` report is filed; a page with a `blob:` iframe.
+
 ## v0.11.0-beta.18 (2026-11-26)
 
 - Fix (Linux and Windows, OFS-57): a Bare screenshot that is withheld
