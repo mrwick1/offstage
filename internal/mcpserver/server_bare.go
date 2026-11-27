@@ -89,6 +89,10 @@ func (s *Server) registerBare(ctx context.Context, srv *mcp.Server) error {
 				failed = fmt.Errorf("Bare tool failed")
 				if strings.HasPrefix(textResultText(result), "withheld:") {
 					failed = &screen.Error{Code: screen.CodeWithheld, Msg: "Bare withheld a capture"}
+				} else if sc, ok := result.StructuredContent.(map[string]any); ok {
+					if f, ok := sc["failure"].(map[string]any); ok && f["code"] == string(screen.CodeInvalidArgs) {
+						failed = &screen.Error{Code: screen.CodeInvalidArgs, Msg: "Bare refused the arguments"}
+					}
 				}
 			}
 			// Bare arguments can contain credentials and scripts. Log metadata only.

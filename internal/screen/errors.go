@@ -42,6 +42,8 @@ const (
 	// (a headless browser has no compositor, windows, mirror or clipboard).
 	CodeUnsupportedKind Code = "unsupported_kind"
 	CodeInternal        Code = "internal" // offstage itself failed, for example a panic in a tool
+	// CodeInvalidArgs: Bare refused the caller's arguments.
+	CodeInvalidArgs Code = "invalid_arguments"
 )
 
 // Error carries a code, a message and a hint for the caller.

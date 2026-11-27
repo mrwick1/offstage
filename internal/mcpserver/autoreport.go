@@ -29,6 +29,7 @@ var autoBugCodes = map[string]bool{
 // the block log only.
 var autoIgnored = map[string]bool{
 	"invalid_name": true, "not_owner": true, "ack_required": true, "system_prompt": true, "withheld": true,
+	"invalid_arguments": true,
 }
 
 type autoState struct {
