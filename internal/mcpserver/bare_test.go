@@ -185,6 +185,26 @@ func TestBareBrowser(t *testing.T) {
 	if metas, _ = filepath.Glob(filepath.Join(report.QueueDir(), "*", "meta.json")); len(metas) != 1 {
 		t.Fatalf("automatic reports %v after privacy refusals, want 1", metas)
 	}
+	// Bare's refusal of the caller's arguments is the caller's mistake: it files no report.
+	call("browser_open", map[string]any{"url": page.URL, "session": "args"})
+	for range autoStreak {
+		res, err := cs.CallTool(ctx, &mcp.CallToolParams{Name: "browser_act", Arguments: map[string]any{"session": "args", "op": "wait"}})
+		if err != nil || !res.IsError {
+			t.Fatalf("act without a ref: %v %v", res, err)
+		}
+	}
+	call("browser_close", map[string]any{"session": "args"})
+	raw, err = os.ReadFile(filepath.Join(os.Getenv("XDG_STATE_HOME"), "offstage", "actions.jsonl"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if lines := strings.Split(strings.TrimSpace(string(raw)), "\n"); !strings.Contains(lines[len(lines)-2], `"error":"invalid_arguments"`) {
+		t.Fatalf("audit entry %s, want error invalid_arguments", lines[len(lines)-2])
+	}
+	time.Sleep(500 * time.Millisecond) // an automatic report is filed in the background
+	if metas, _ = filepath.Glob(filepath.Join(report.QueueDir(), "*", "meta.json")); len(metas) != 1 {
+		t.Fatalf("automatic reports %v after argument errors, want 1", metas)
+	}
 	res, err := cs.CallTool(ctx, &mcp.CallToolParams{Name: "screen_create", Arguments: map[string]any{"kind": "headless"}})
 	if err != nil || !res.IsError || !strings.Contains(text(res), "Bare") {
 		t.Fatalf("old headless API: %v %v", res, err)
